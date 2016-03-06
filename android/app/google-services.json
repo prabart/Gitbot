@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_id": "gitbot-8430f",
+    "project_number": "549577662755",
+    "name": "Gitbot"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549577662755:android:f972eb02b213a3bf",
+        "client_id": "android:com.gitbot",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.gitbot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "549577662755-nigdrdte8618tijmtqenqaf7ho5ldenp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gitbot",
+            "certificate_hash": "6A02CEDB250AD3D23A0E897B481C4FDD1EB67956"
+          }
+        },
+        {
+          "client_id": "549577662755-vom20q1rcpkkf9p9u20v5mggnd0icbqb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}
