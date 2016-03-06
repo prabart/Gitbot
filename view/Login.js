@@ -24,17 +24,18 @@ var Login = React.createClass({
   getInitialState:function(){
 
   	return({
-      username:"",
+      userName:"",
       password:"",
-      isLoading:true
+      isLoading:true,
+      isLogin:false
   	})
 
   },
   componentWillMount:function(){
     var current = this;
-    AppStore.getVal(AppData.defaults.token).done(function(value) {
+    AppStore.getVal(AppData.storeData.token).done(function(value) {
       console.log("Token",value)
-      if (value == AppData.defaults.emptyKey) {
+      if (value == AppData.storeData.empty) {
         current.setState({isLoading:false})
       } else {
         current.props.navigator.push({
@@ -57,6 +58,15 @@ var Login = React.createClass({
         </View>
       )
     }
+    if(this.state.isLogin){
+      return(
+        <View style={styles.container}>
+          <View style={styles.splashBox}>
+            <FontAwesome name="github" size={150} color="#67AB9E" />
+          </View>
+        </View>
+      )
+    }
     return (
     	<View style={styles.container}>
         <View style={styles.logoMain}> 
@@ -68,13 +78,13 @@ var Login = React.createClass({
 	      <View style={styles.loginWrapper}>
 	        <View style={styles.loginList}>
             <Entypo name="github" size={20} color="#67AB9E" />
-	          <TextInput style={styles.contents} underlineColorAndroid='#F0E7D4' value={this.state.username} onChangeText={(username) => this.setState({username})} />
+	          <TextInput style={styles.contents} underlineColorAndroid='#F0E7D4' value={this.state.userName} onChangeText={(userName) => this.setState({userName})} />
 	        </View>
 	        <View style={styles.loginList}>
             <Entypo name="key" size={20} color="#67AB9E" />
 	          <TextInput style={styles.contents} underlineColorAndroid='#F0E7D4' value={this.state.password} onChangeText={(password) => this.setState({password})} secureTextEntry={true} />
 	        </View>
-          <TouchableHighlight activeOpacity={1} underlayColor='#F19793' onPress={()=>this.login(this.state.username,this.state.password)}>
+          <TouchableHighlight activeOpacity={1} underlayColor='#F19793' onPress={()=>this.login(this.state.userName,this.state.password)}>
           <View style={styles.buttonWrapper}>
             <Text style={styles.buttonText}>Sign In</Text>
           </View>
@@ -83,13 +93,20 @@ var Login = React.createClass({
 	    </View>
     );
   },
-  login:function(username, password){
- 		console.log(username,password);
+  login:function(userName, password){
+ 		console.log(userName,password);
     var current = this;
-    Api.UserLogin(username,password).done(function(response) {
+    AppStore.setVal(AppData.storeData.userName,userName);
+    AppStore.setVal(AppData.storeData.password,password);
+    //console.log(AppData.user.userName,AppData.user.password);
+    //current.setState({isLogin:true})
+    Api.UserLogin(userName,password).done(function(response) {
       console.log(response)
       if(response.token){
-        AppStore.setVal(AppData.defaults.token,response.token).done(function(value) {
+        var github_id = response.id
+        AppStore.setVal(AppData.storeData.token,response.token).done(function(value) {
+          console.log(userName,password,github_id.toString())
+          AppStore.setVal(AppData.storeData.githubId,github_id.toString());          
           current.props.navigator.push({
             title: 'Git Home',
             component: GitHome,

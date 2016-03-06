@@ -12,7 +12,7 @@ var App_Store = {
       if (value !== null) {
         return value;
       } else {
-        return App_data.defaults.token
+        return App_data.storeData.empty
       }
     } catch (error) {
       console.log("error in getVal :" + error.message);
@@ -21,6 +21,7 @@ var App_Store = {
 
   setVal: async function(key, value) {
     try {
+      console.log(key,value)
       await AsyncStorage.setItem(key, value);
     } catch (error) {
       console.log("error in setVal :" + error.message)

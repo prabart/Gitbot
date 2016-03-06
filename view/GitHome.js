@@ -13,6 +13,7 @@ import React, {
 var Api = require('../Model/Api');
 var AppStore = require('../Model/App_Store');
 var AppData = require('../Model/App_data');
+var github_id,userName,password;
 var Login = React.createClass({
 
   getInitialState:function(){
@@ -25,14 +26,32 @@ var Login = React.createClass({
 
   },
   componentWillMount:function(){
-    
+    AppStore.getVal(AppData.storeData.githubId).done(function(value) {
+      github_id = value;
+      console.log("github_id",github_id)
+    },function(error) {
+      console.log(error);
+    });
+    AppStore.getVal(AppData.storeData.userName).done(function(data) {
+      console.log(data)
+      userName = data;
+    },function(error) {
+      console.log(error);
+    });
+  },
+  componentDidMount:function(){
+    AppStore.getVal(AppData.storeData.password).done(function(value) {
+      password = value;
+    },function(error) {
+      console.log(error);
+    });
   },
 
   render:function() {
     
     return (
     	<View style={styles.container}>
-	      <TouchableHighlight activeOpacity={1} underlayColor='#F19793' onPress={()=>this._handlePress(this.state.username,this.state.password)}>
+	      <TouchableHighlight activeOpacity={1} underlayColor='#F19793' onPress={()=>this.logOut()}>
 	        <View style={styles.buttonWrapper}>
 	          <Text style={styles.buttonText}>Sign Out</Text>
 	        </View>
@@ -40,13 +59,19 @@ var Login = React.createClass({
 	    </View>
     );
   },
-  _handlePress:function(username, password){
-    var current = this;
-      AppStore.removeVal(AppData.defaults.token).done(function(value) {
-        current.props.navigator.pop()
-      }, function(error) {
-        console.log(error);
-      }) 
+  logOut:function(){
+    var current=this;
+    console.log(userName,password,github_id)
+    Api.userLogOut(userName,password,github_id).done(function(response) {
+      console.log(response);
+      if(response.status == 204){
+        AppStore.removeVal(AppData.storeData.token);
+        current.props.navigator.pop();
+      }
+
+    }, function(error) {
+      console.log(error);
+    });  
   }
 
 });
