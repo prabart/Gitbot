@@ -21,7 +21,6 @@ var Api =	{
     })
 	},
   userLogOut:function(username,pass,github_id){
-    console.log(AppData.api_calls.logout+github_id,username,github_id);
     var userName = username;
       console.log(github_id,userName,pass);
       var user = "Basic " + btoa(userName + ":" + pass);
@@ -33,10 +32,15 @@ var Api =	{
           'Content-Type': 'application/json'
         }
       }
-      console.log(requestObj)
       return fetch(AppData.api_calls.logout+github_id, requestObj).then(function(res) {
         console.log(res)
         return res;
+      })
+  },
+  getUserInfo:function(token){
+      return fetch(AppData.api_calls.userInfo+token).then(function(res) {
+        console.log(res)
+        return res.json();
       })
   }
 };

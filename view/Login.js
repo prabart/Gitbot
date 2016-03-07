@@ -69,7 +69,7 @@ var Login = React.createClass({
     }
     return (
     	<View style={styles.container}>
-        <View style={styles.logoMain}> 
+        <View style={styles.logoMain}>
           <Text style={styles.title}>Git Bot</Text>
         </View>
         <View style={{alignItems:"center",justifyContent:"center",height:200}}>
@@ -98,15 +98,10 @@ var Login = React.createClass({
     var current = this;
     AppStore.setVal(AppData.storeData.userName,userName);
     AppStore.setVal(AppData.storeData.password,password);
-    //console.log(AppData.user.userName,AppData.user.password);
-    //current.setState({isLogin:true})
     Api.UserLogin(userName,password).done(function(response) {
       console.log(response)
       if(response.token){
-        var github_id = response.id
         AppStore.setVal(AppData.storeData.token,response.token).done(function(value) {
-          console.log(userName,password,github_id.toString())
-          AppStore.setVal(AppData.storeData.githubId,github_id.toString());          
           current.props.navigator.push({
             title: 'Git Home',
             component: GitHome,
@@ -120,7 +115,7 @@ var Login = React.createClass({
       }
     }, function(error) {
       console.log(error);
-    });  
+    });
   }
 
 });

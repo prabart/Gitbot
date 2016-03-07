@@ -7,12 +7,17 @@ import React, {
   Text,
   View,
   TouchableHighlight,
-  TextInput
+  Dimensions,
+  TextInput,
+  Image
 } from 'react-native';
 
 var Api = require('../Model/Api');
 var AppStore = require('../Model/App_Store');
 var AppData = require('../Model/App_data');
+var FontAwesome = require('react-native-vector-icons/FontAwesome');
+var Entypo = require('react-native-vector-icons/Entypo');
+var deviceWidth = Dimensions.get('window').width
 var github_id,userName,password;
 var Login = React.createClass({
 
@@ -21,25 +26,26 @@ var Login = React.createClass({
   	return({
       username:"",
       password:"",
-      isLoading:true
+      isLoading:true,
+      userInfo:{}
   	})
 
   },
   componentWillMount:function(){
-    AppStore.getVal(AppData.storeData.githubId).done(function(value) {
-      github_id = value;
-      console.log("github_id",github_id)
-    },function(error) {
-      console.log(error);
-    });
-    AppStore.getVal(AppData.storeData.userName).done(function(data) {
-      console.log(data)
-      userName = data;
+    var ref = this;
+    AppStore.getVal(AppData.storeData.token).done(function(token) {
+      Api.getUserInfo(token).done(function(response) {
+        console.log(response);
+        ref.setState({isLoading:false,userInfo:response})
+      }, function(error) {
+        console.log(error);
+      });
     },function(error) {
       console.log(error);
     });
   },
   componentDidMount:function(){
+    var current = this;
     AppStore.getVal(AppData.storeData.password).done(function(value) {
       password = value;
     },function(error) {
@@ -48,20 +54,35 @@ var Login = React.createClass({
   },
 
   render:function() {
-    
+    var userInfo = this.state.userInfo;
+    if(this.state.isLoading){
+      return(
+        <View style={styles.container}>
+          <View style={styles.splashBox}>
+            <FontAwesome name="github" size={150} color="#67AB9E" />
+          </View>
+        </View>
+      )
+    }
     return (
     	<View style={styles.container}>
-	      <TouchableHighlight activeOpacity={1} underlayColor='#F19793' onPress={()=>this.logOut()}>
-	        <View style={styles.buttonWrapper}>
-	          <Text style={styles.buttonText}>Sign Out</Text>
-	        </View>
-	      </TouchableHighlight>
+        <View style={styles.logoMain}>
+          <Text style={styles.title}>Git Bot</Text>
+        </View>
+        <View style={styles.userPanel}>
+          <View style={styles.avator}>
+            <Image source={{uri:userInfo.avatar_url}} style={{width: 70, height: 70,borderRadius:50}}/>
+          </View>
+          <View style={{flex:0.8,marginTop:10,marginLeft:5}}>
+            <Text style={{fontWeight:"bold",fontSize:20,color:"white"}}>{userInfo.name}</Text>
+            <Text style={{fontWeight:"bold",fontSize:13,color:"#627383"}}>{userInfo.location}</Text>
+          </View>
+        </View>
 	    </View>
     );
   },
   logOut:function(){
     var current=this;
-    console.log(userName,password,github_id)
     Api.userLogOut(userName,password,github_id).done(function(response) {
       console.log(response);
       if(response.status == 204){
@@ -71,7 +92,7 @@ var Login = React.createClass({
 
     }, function(error) {
       console.log(error);
-    });  
+    });
   }
 
 });
@@ -79,59 +100,26 @@ var Login = React.createClass({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:"orange"
+    backgroundColor:"#304153"
   },
-  icon: {
-    textAlign: 'center',
-    marginTop: 80,
-    fontWeight: 'bold',
-    fontSize: 40,
-    color: '#ffffff',
-  },
-  contents: {
-    color: '#ffffff',
-    flex:1
-  },
-  loginWrapper: {
-    flex: 1,
-    marginTop: 120,
-    marginLeft: 30,
-    marginRight: 30,
-  },
-  linearGradient: {
-    flex: 1,
-    paddingLeft: 0,
-    paddingRight: 0,
-    borderRadius: 5
-  },
-  buttonWrapper:{
-    backgroundColor:"#BC4A4A",
-    paddingTop:20,
-    paddingBottom:20,
+  logoMain:{
+    height:50,
+    backgroundColor:"#0ECCE4",
     justifyContent:"center",
-    alignItems:"center"
+    paddingLeft:10
   },
-  buttonText: {
-    fontSize: 18,
-    fontFamily: 'Gill Sans',
-    textAlign: 'center',
-    color: '#ffffff'
+  title:{
+    color:"white",
+    fontSize:20,
+    fontWeight:'bold',
   },
-  loginList: {
-    alignItems: 'center',
-    paddingTop: 10,
-    paddingBottom: 10,
+  userPanel:{
+    flex:1,
     flexDirection:"row"
   },
-  reachLogo:{
-    height:100,
-    width:200,
-    marginTop:50
-  },
-  reachLogoSplash:{
-    height:300,
-    width:350,
-    marginBottom:50
+  avator:{
+    flex:0.2,
+    margin:10
   }
 });
 
