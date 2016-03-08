@@ -42,7 +42,13 @@ var Api =	{
         console.log(res)
         return res.json();
       })
-  }
+  },
+	starredRepos:function(token) {
+		return fetch(AppData.api_calls.starred+token).then(function(res) {
+			console.log(res)
+			return res.json();
+		})
+	}
 };
 
 module.exports = Api

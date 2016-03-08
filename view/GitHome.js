@@ -27,7 +27,8 @@ var Login = React.createClass({
       username:"",
       password:"",
       isLoading:true,
-      userInfo:{}
+      userInfo:{},
+      starredRepos:[],
   	})
 
   },
@@ -67,19 +68,43 @@ var Login = React.createClass({
     return (
     	<View style={styles.container}>
         <View style={styles.logoMain}>
+          <Entypo name="menu" size={26} color="white" />
           <Text style={styles.title}>Git Bot</Text>
         </View>
-        <View style={styles.userPanel}>
-          <View style={styles.avator}>
-            <Image source={{uri:userInfo.avatar_url}} style={{width: 70, height: 70,borderRadius:50}}/>
-          </View>
-          <View style={{flex:0.8,marginTop:10,marginLeft:5}}>
-            <Text style={{fontWeight:"bold",fontSize:20,color:"white"}}>{userInfo.name}</Text>
-            <Text style={{fontWeight:"bold",fontSize:13,color:"#627383"}}>{userInfo.location}</Text>
-          </View>
+        {this.renderUserInfo(userInfo)}
+        <View style={styles.thickLine}>
         </View>
 	    </View>
     );
+  },
+  renderUserInfo:function(userInfo){
+    return(
+      <View style={styles.userPanel}>
+        <View style={styles.avator}>
+          <Image source={{uri:userInfo.avatar_url}} style={{width: 80, height: 80,borderRadius:50}}/>
+        </View>
+        <View style={{flex:0.8,marginTop:10,marginLeft:5}}>
+          <View style={{marginLeft:20}}>
+            <Text style={{fontWeight:"bold",fontSize:20,color:"white"}}>{userInfo.name}</Text>
+            <Text style={{fontWeight:"bold",fontSize:13,color:"#627383"}}>{userInfo.location}</Text>
+          </View>
+          <View style={{flex:1,flexDirection:"row",marginTop:5}}>
+            <View style={{flex:0.3}}>
+              <Text style={{fontWeight:"bold",textAlign:"center",fontSize:20,color:"#F9CD0A"}}>{userInfo.followers}</Text>
+              <Text style={{fontWeight:"bold",textAlign:"center",fontSize:10,color:"#627383"}}>Followers</Text>
+            </View>
+            <View style={{flex:0.3}}>
+              <Text style={{fontWeight:"bold",textAlign:"center",fontSize:20,color:"#F63256"}}>{userInfo.following}</Text>
+              <Text style={{fontWeight:"bold",textAlign:"center",fontSize:10,color:"#627383"}}>Following</Text>
+            </View>
+            <View style={{flex:0.3}}>
+              <Text style={{fontWeight:"bold",textAlign:"center",fontSize:20,color:"#F9A00E"}}>{userInfo.public_repos}</Text>
+              <Text style={{fontWeight:"bold",textAlign:"center",fontSize:10,color:"#627383"}}>Repos</Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    )
   },
   logOut:function(){
     var current=this;
@@ -99,27 +124,32 @@ var Login = React.createClass({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor:"#304153"
+    backgroundColor:"#304153",
+    flexDirection:"column",
+    flex:1
   },
   logoMain:{
-    height:50,
     backgroundColor:"#0ECCE4",
-    justifyContent:"center",
-    paddingLeft:10
+    padding:10,
+    flexDirection:"row"
   },
   title:{
     color:"white",
     fontSize:20,
     fontWeight:'bold',
+    paddingLeft:5
   },
   userPanel:{
-    flex:1,
     flexDirection:"row"
   },
   avator:{
     flex:0.2,
     margin:10
+  },
+  thickLine:{
+    marginTop:5,
+    padding:1,
+    backgroundColor:"#0ECCE4",
   }
 });
 
