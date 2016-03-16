@@ -48,6 +48,13 @@ var Api =	{
 			console.log(res)
 			return res.json();
 		})
+	},
+	reposList:function(token) {
+		console.log(token)
+		return fetch(AppData.api_calls.repos+token).then(function(res) {
+			console.log(res)
+			return res.json();
+		})
 	}
 };
 

@@ -17,6 +17,9 @@ var AppStore = require('../Model/App_Store');
 var AppData = require('../Model/App_data');
 var FontAwesome = require('react-native-vector-icons/FontAwesome');
 var Entypo = require('react-native-vector-icons/Entypo');
+var ScrollableTabView = require('react-native-scrollable-tab-view');
+var Repo = require('./Repo');
+var Note = require('./Note');
 var deviceWidth = Dimensions.get('window').width
 var github_id,userName,password;
 var Login = React.createClass({
@@ -73,6 +76,12 @@ var Login = React.createClass({
         </View>
         {this.renderUserInfo(userInfo)}
         <View style={styles.thickLine}>
+        </View>
+        <View style={{backgroundColor:"white",flexDirection:"row",flex:1}}>
+          <ScrollableTabView style={{flex:1}} initialPage={0}>
+            <Repo tabLabel="Repos" />
+            <Note tabLabel="Notes" />
+          </ScrollableTabView>
         </View>
 	    </View>
     );
