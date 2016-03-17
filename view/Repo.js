@@ -72,23 +72,23 @@ var Repo = React.createClass({
       <View style={styles.repoPane}>
         <View style={{flex:1,flexDirection:"row"}}>
           <View style={{flex:0.8}}>
-            <Text style={{color:"#57B7F3",fontWeight:"bold",fontSize:18}}>{repo.name}</Text>
+            <Text style={{color:"#3D9970",fontWeight:"bold",fontSize:18}}>{repo.name}</Text>
           </View>
           <View style={{flex:0.2,alignItems:"flex-end"}}>
             <Text style={{color:GitColor[repo.language],paddingRight:3,fontWeight:"bold"}}>{repo.language}</Text>
           </View>
         </View>
         <View style={{flex:1,marginTop:5}}>
-          <Text style={{color:"black"}}>{repo.description}</Text>
+          <Text style={{color:"#627383"}}>{repo.description}</Text>
         </View>
         <View style={{flex:1,flexDirection:"row",marginTop:5}}>
           <View style={styles.listIcon}>
-            <Ionicons name="fork-repo" size={18} color="black" />
+            <Ionicons name="fork-repo" size={18} color="#FF4136" />
             <Text style={{color:"black",marginLeft:5}}>{repo.forks_count}</Text>
           </View>
           <View style={styles.listIcon}>
-            <FontAwesome name="star" size={15} color="black" />
-            <Text style={{color:"#ccc",marginLeft:5}}>{repo.stargazers_count}</Text>
+            <FontAwesome name="star" size={15} color="#FF4136" />
+            <Text style={{color:"black",marginLeft:5}}>{repo.stargazers_count}</Text>
           </View>
         </View>
       </View>
