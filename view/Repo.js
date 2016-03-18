@@ -33,23 +33,17 @@ var Repo = React.createClass({
   },
   componentDidMount:function(){
     var ref = this;
-    AppStore.getVal(AppData.storeData.token).done(function(token) {
-      Api.reposList(token).done(function(response) {
-        console.log(response);
-        ref.setState({
-          dataSource: ref.state.dataSource.cloneWithRows(response),
-          isLoading:false
-        })
-      }, function(error) {
-        console.log(error);
-      });
-    },function(error) {
+    Api.reposList(ref.props.accessToken).done(function(response) {
+      ref.setState({
+        dataSource: ref.state.dataSource.cloneWithRows(response),
+        isLoading:false
+      })
+    }, function(error) {
       console.log(error);
     });
   },
 
   render:function() {
-    console.log(this.state.isLoading)
     // if(this.state.isLoading){
     //   return(
     //     <View style={styles.container}>
@@ -67,27 +61,26 @@ var Repo = React.createClass({
     );
   },
   renderRow:function(repo){
-    console.log(repo);
     return(
-      <View style={styles.repoPane}>
+      <View style={[styles.repoPane,{borderColor:GitColor[repo.language]}]}>
         <View style={{flex:1,flexDirection:"row"}}>
           <View style={{flex:0.8}}>
-            <Text style={{color:"#3D9970",fontWeight:"bold",fontSize:18}}>{repo.name}</Text>
+            <Text style={{color:"#D64D4D",fontWeight:"bold",fontSize:18}}>{repo.name}</Text>
           </View>
           <View style={{flex:0.2,alignItems:"flex-end"}}>
             <Text style={{color:GitColor[repo.language],paddingRight:3,fontWeight:"bold"}}>{repo.language}</Text>
           </View>
         </View>
         <View style={{flex:1,marginTop:5}}>
-          <Text style={{color:"#627383"}}>{repo.description}</Text>
+          <Text style={{color:"#042C62",fontWeight:"bold"}}>{repo.description}</Text>
         </View>
         <View style={{flex:1,flexDirection:"row",marginTop:5}}>
           <View style={styles.listIcon}>
-            <Ionicons name="fork-repo" size={18} color="#FF4136" />
+            <Ionicons name="fork-repo" size={18} color="#009688" />
             <Text style={{color:"black",marginLeft:5}}>{repo.forks_count}</Text>
           </View>
           <View style={styles.listIcon}>
-            <FontAwesome name="star" size={15} color="#FF4136" />
+            <FontAwesome name="star" size={15} color="#FFC425" />
             <Text style={{color:"black",marginLeft:5}}>{repo.stargazers_count}</Text>
           </View>
         </View>
@@ -105,9 +98,12 @@ const styles = StyleSheet.create({
   repoPane:{
     flex:1,
     backgroundColor:"white",
-    margin:7,
+    margin:5,
+    marginLeft:15,
+    marginRight:15,
     borderRadius:5,
-    padding:5
+    borderWidth:1,
+    padding:8,
   },
   listIcon:{
     flex:0.5,

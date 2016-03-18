@@ -6,7 +6,7 @@ var App_data = {
     logout:github_url+"authorizations/",
     userInfo:github_url+"user?access_token=",
     repos:github_url+"user/repos?access_token=",
-    starred:github_url+"user/starred?access_token="
+    starred:github_url+"user/starred?access_token=",
   },
   storeData:{
   	token:"TOKEN",

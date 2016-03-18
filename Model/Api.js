@@ -55,6 +55,16 @@ var Api =	{
 			console.log(res)
 			return res.json();
 		})
+	},
+	newsList:function(token,userName) {
+		console.log(token,userName)
+		var url = "https://api.github.com/users/"+userName+"/received_events?access_token="+token;
+
+		console.log(url)
+		return fetch(url).then(function(res) {
+			console.log(res)
+			return res.json();
+		})
 	}
 };
 

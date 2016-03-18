@@ -78,11 +78,11 @@ var Login = React.createClass({
 	      <View style={styles.loginWrapper}>
 	        <View style={styles.loginList}>
             <Entypo name="github" size={20} color="#67AB9E" />
-	          <TextInput style={styles.contents} underlineColorAndroid='#F0E7D4' value={this.state.userName} onChangeText={(userName) => this.setState({userName})} />
+	          <TextInput style={styles.contents} underlineColorAndroid='#304153' value={this.state.userName} onChangeText={(userName) => this.setState({userName})} />
 	        </View>
 	        <View style={styles.loginList}>
             <Entypo name="key" size={20} color="#67AB9E" />
-	          <TextInput style={styles.contents} underlineColorAndroid='#F0E7D4' value={this.state.password} onChangeText={(password) => this.setState({password})} secureTextEntry={true} />
+	          <TextInput style={styles.contents} underlineColorAndroid='#304153' value={this.state.password} onChangeText={(password) => this.setState({password})} secureTextEntry={true} />
 	        </View>
           <TouchableHighlight activeOpacity={1} underlayColor='#F19793' onPress={()=>this.login(this.state.userName,this.state.password)}>
           <View style={styles.buttonWrapper}>
@@ -123,7 +123,7 @@ var Login = React.createClass({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:"#F0E7D4"
+    backgroundColor:"#304153"
   },
   contents: {
     color: '#67AB9E',

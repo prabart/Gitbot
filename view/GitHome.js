@@ -38,6 +38,7 @@ var Login = React.createClass({
   componentWillMount:function(){
     var ref = this;
     AppStore.getVal(AppData.storeData.token).done(function(token) {
+      github_id = token;
       Api.getUserInfo(token).done(function(response) {
         console.log(response);
         ref.setState({isLoading:false,userInfo:response})
@@ -77,10 +78,11 @@ var Login = React.createClass({
         {this.renderUserInfo(userInfo)}
         <View style={styles.thickLine}>
         </View>
-        <View style={{backgroundColor:"#F9A00E",flexDirection:"row",flex:1}}>
-          <ScrollableTabView style={{flex:1}} initialPage={0}>
-            <Repo tabLabel="Repos" />
-            <Note tabLabel="Notes" />
+        <View style={{backgroundColor:"304153",flexDirection:"row",flex:1}}>
+          <ScrollableTabView style={{flex:1}} initialPage={0} tabBarUnderlineColor="#0ECCE4"
+           tabBarActiveTextColor="0ECCE4" tabBarInactiveTextColor="ccc">
+            <Repo tabLabel="Repos" accessToken={github_id}/>
+            <NewsFeed tabLabel="News Feed" accessToken={github_id}/>
           </ScrollableTabView>
         </View>
 	    </View>
@@ -157,9 +159,14 @@ const styles = StyleSheet.create({
   },
   thickLine:{
     marginTop:5,
-    padding:1,
+    padding:2,
     backgroundColor:"#0ECCE4",
-  }
+  },
+  splashBox:{
+    alignItems:"center",
+    justifyContent:"center",
+    height:deviceWidth
+  },
 });
 
 module.exports = Login;

@@ -8,40 +8,45 @@ import React, {
   TouchableHighlight,
   Dimensions,
   TextInput,
-  Image
+  Image,
+  ListView
 } from 'react-native';
 
 var Api = require('../Model/Api');
 var AppStore = require('../Model/App_Store');
 var AppData = require('../Model/App_data');
+var GitColor = require('../Model/GithubColors');
 var FontAwesome = require('react-native-vector-icons/FontAwesome');
+var Ionicons = require('react-native-vector-icons/Ionicons');
 var Entypo = require('react-native-vector-icons/Entypo');
-var token;
-var Note = React.createClass({
+var token,userName;
+var NewsFeed = React.createClass({
 
   getInitialState:function(){
   	return({
       allRepos:[],
-      isLoading:true
+      isLoading:true,
+      dataSource: new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2,
+      }),
   	})
   },
   componentWillMount:function(){
-    console.log(token,"####1111#######")
+  },
+  componentDidMount:function(){
     var ref = this;
-    AppStore.getVal(AppData.storeData.token).done(function(token) {
-      console.log(token,"###########")
-      Api.reposList(token).done(function(response) {
-        console.log(response);
+    AppStore.getVal(AppData.storeData.userName).done(function(value) {
+      Api.newsList(ref.props.accessToken,value).done(function(response) {
+        ref.setState({
+          dataSource: ref.state.dataSource.cloneWithRows(response),
+          isLoading:false
+        })
       }, function(error) {
         console.log(error);
       });
     },function(error) {
       console.log(error);
     });
-  },
-  componentDidMount:function(){
-    console.log(token,"####22211#######")
-
   },
 
   render:function() {
@@ -55,19 +60,52 @@ var Note = React.createClass({
     // }
     return (
     	<View style={styles.container}>
-          <Text style={{color:"white"}}>Git Bot</Text>
+        <ListView
+          style = {{flex:1}}
+          dataSource = {this.state.dataSource}
+          renderRow = {this.renderRow}/>
 	    </View>
     );
+  },
+  renderRow:function(news){
+    console.log(news);
+    return(
+      <View style={styles.repoPane}>
+        <View style={{flex:1,flexDirection:"row"}}>
+          <View style={styles.avator}>
+            <Image source={{uri:news.actor.avatar_url}} style={{width:40, height:40,borderRadius:50}}/>
+          </View>
+        </View>
+      </View>
+    )
   }
 });
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor:"white",
-    width:300,
+    backgroundColor:"#304153",
     flexDirection:"row",
     flex:1
   },
+  avator:{
+    flex:0.2,
+    margin:10
+  },
+  repoPane:{
+    flex:1,
+    backgroundColor:"white",
+    margin:5,
+    marginLeft:15,
+    marginRight:15,
+    borderRadius:5,
+    borderWidth:1,
+  },
+  listIcon:{
+    flex:0.5,
+    flexDirection:"row",
+    alignItems:"center",
+    justifyContent:"center"
+  }
 });
 
-module.exports = Note;
+module.exports = NewsFeed;
